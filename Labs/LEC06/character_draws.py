@@ -1,8 +1,15 @@
 # 실습 과제 진행
+import os
 from pico2d import *
 
+image_path = os.path.join(os.path.dirname(__file__), 'character.png')
+
 open_canvas(800, 600)
-character = load_image('character.png')
+character = load_image(image_path)
+
+theta = math.radians(30)
+x = 400 + 200 * math.cos(theta)
+y = 300 + 200 * math.sin(theta)
 
 
 def move_circle():
