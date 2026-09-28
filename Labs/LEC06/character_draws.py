@@ -50,14 +50,14 @@ def draw_right():
 
 
 def move_rectangle():
-    print("rectangle")
+    # print("rectangle")
     draw_top()
     draw_left()
     draw_bottom()
     draw_right()
 
 def move_triangle():
-    print("triangle")
+    # print("triangle")
     pass
 
 
