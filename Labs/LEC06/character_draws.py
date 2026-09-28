@@ -12,29 +12,40 @@ x = 400 + 200 * math.cos(theta)
 y = 300 + 200 * math.sin(theta)
 
 
+
+def draw_character(x, y):
+    clear_canvas()
+    character.draw(x, y)
+    update_canvas()
+    delay(0.01)
+
+
 def move_circle():
    for degree in range(360):
         theta = math.radians(degree)
         x = 400 + 200 * math.cos(theta)
         y = 300 + 200 * math.sin(theta)
 
-        clear_canvas()
-        character.draw(x, y)
-        update_canvas()
-        delay(0.01)
+        draw_character(x, y)
+
+
 
 
 def draw_top():
-        pass    
+        for x in range(50, 750, 5):
+              draw_character(x, 550)
 
 def draw_left():    
-        pass
+        for y in range(550, 50, -5):
+            draw_character(50, y)
 
 def draw_bottom():
-        pass
+        for x in range(50, 750, 5):
+            draw_character(x, 50)
 
 def draw_right():
-        pass
+        for y in range(50, 550, 5):
+            draw_character(750, y)
 
 
 
