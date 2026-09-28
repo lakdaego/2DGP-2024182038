@@ -56,11 +56,40 @@ def move_rectangle():
     draw_bottom()
     draw_right()
 
+
+point_a = (400, 500)
+point_b = (700, 100)
+point_c = (100, 100)
+
+
+def draw_triangle_ab():
+    for step in range(101):
+        t = step / 100
+        x = point_a[0] + (point_b[0] - point_a[0]) * t
+        y = point_a[1] + (point_b[1] - point_a[1]) * t
+        draw_character(x, y)
+
+
+def draw_triangle_bc():
+    for step in range(101):
+        t = step / 100
+        x = point_b[0] + (point_c[0] - point_b[0]) * t
+        y = point_b[1] + (point_c[1] - point_b[1]) * t
+        draw_character(x, y)
+
+
+def draw_triangle_ca():
+    for step in range(101):
+        t = step / 100
+        x = point_c[0] + (point_a[0] - point_c[0]) * t
+        y = point_c[1] + (point_a[1] - point_c[1]) * t
+        draw_character(x, y)
+
+
 def move_triangle():
-    # print("triangle")
-    point_a = (400, 500)
-    point_b = (700, 100)
-    point_c = (100, 100)
+    draw_triangle_ab()
+    draw_triangle_ca()
+    draw_triangle_bc()
 
 
 
