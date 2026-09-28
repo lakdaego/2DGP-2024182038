@@ -58,7 +58,9 @@ def move_rectangle():
 
 def move_triangle():
     # print("triangle")
-    pass
+    point_a = (400, 500)
+    point_b = (700, 100)
+    point_c = (100, 100)
 
 
 
