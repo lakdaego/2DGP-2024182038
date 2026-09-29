@@ -21,7 +21,7 @@ while True:
 		for frame in range(6):
 			clear_canvas()
 			grass.draw(400, 30)
-			character.clip_draw(frame * 128, 640, 128, 128, 400, 300, 134, 134)
+			character.clip_draw(frame * 128, 640, 128, 128, 400, 300, 154, 154)
 			update_canvas()
 			delay(0.05)
 
