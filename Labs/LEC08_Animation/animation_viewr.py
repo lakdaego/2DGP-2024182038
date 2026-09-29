@@ -28,7 +28,8 @@ while True:
 	for death_frame in range(30):
 		clear_canvas()
 		grass.draw(400, 30)
-		character.clip_draw((death_frame % 3) * 128, 0, 128, 128, 400, 300)
+		death_size = 154 if death_frame % 3 == 2 else 128
+		character.clip_draw((death_frame % 3) * 128, 0, 128, 128, 400, 300, death_size, death_size)
 		update_canvas()
 		delay(0.1)
 
