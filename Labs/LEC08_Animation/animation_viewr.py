@@ -25,6 +25,13 @@ while True:
 			update_canvas()
 			delay(0.05)
 
+	for death_frame in range(3):
+		clear_canvas()
+		grass.draw(400, 30)
+		character.clip_draw(death_frame * 128, 0, 128, 128, 400, 300)
+		update_canvas()
+		delay(0.05)
+
 
 
 
