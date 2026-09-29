@@ -7,10 +7,10 @@ character = load_image('SamuraiSheet.png')
 
 frame = 0
 
-for x in range(0, 800, 5):
+for _ in range(160):
 	clear_canvas()
 	grass.draw(400, 30)
-	character.clip_draw(frame * 128, 1024, 128, 128, x, 90)
+	character.clip_draw(frame * 128, 1024, 128, 128, 400, 90)
 	update_canvas()
 
 	frame = (frame + 1) % 8
