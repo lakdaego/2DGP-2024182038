@@ -5,18 +5,18 @@ open_canvas()
 grass = load_image('grass.png')
 character = load_image('SamuraiSheet.png')
 
-frame = 0
+while True:
+	for source_y in (1024, 896):
+		frame = 0
+		for _ in range(60):
+			clear_canvas()
+			grass.draw(400, 30)
+			character.clip_draw(frame * 128, source_y, 128, 128, 400, 300)
+			update_canvas()
 
-for _ in range(160):
-	clear_canvas()
-	grass.draw(400, 30)
-	character.clip_draw(frame * 128, 896, 128, 128, 400, 300)
-	update_canvas()
+			frame = (frame + 1) % 8
+			delay(0.05)
 
-	frame = (frame + 1) % 8
-	delay(0.05)
-
-close_canvas()
 
 
 
