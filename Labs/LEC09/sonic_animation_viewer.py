@@ -1,6 +1,7 @@
 """Play every animation in the Sonic sprite sheet with pico2d."""
 
 from dataclasses import dataclass
+from math import pi, sin
 from pathlib import Path
 from time import perf_counter
 
@@ -232,3 +233,128 @@ def validate_animations():
                 or frame.top + frame.height > SPRITE_HEIGHT
             ):
                 raise ValueError("Frame lies outside the sprite sheet: " + animation.name)
+
+
+class AnimationViewer:
+    def __init__(self, sprite):
+        self.sprite = sprite
+        self.animation_index = 0
+        self.animation_elapsed = 0.0
+        self.rest_elapsed = 0.0
+        self.resting = False
+        self.x = CANVAS_WIDTH / 2
+        self.direction = 1
+        self._reset_position()
+
+    @property
+    def animation(self):
+        return ANIMATIONS[self.animation_index]
+
+    @property
+    def frame_index(self):
+        if self.resting:
+            return len(self.animation.frames) - 1
+        cycle_duration = len(self.animation.frames) * FRAME_DURATION
+        return min(
+            int((self.animation_elapsed % cycle_duration) / FRAME_DURATION),
+            len(self.animation.frames) - 1,
+        )
+
+    @property
+    def frame(self):
+        return self.animation.frames[self.frame_index]
+
+    def _reset_position(self):
+        if self.animation.movement in {"run", "roll"}:
+            widest_frame = max(frame.width for frame in self.animation.frames)
+            self.x = widest_frame * SPRITE_SCALE / 2 + 8
+            self.direction = 1
+        else:
+            self.x = CANVAS_WIDTH / 2
+
+    def update(self, delta_time):
+        if delta_time < 0:
+            raise ValueError("Elapsed time cannot be negative.")
+
+        remaining = delta_time
+        while remaining > 0:
+            if self.resting:
+                until_next_animation = REST_DURATION - self.rest_elapsed
+                step = min(remaining, until_next_animation)
+                self.rest_elapsed += step
+                remaining -= step
+                if self.rest_elapsed >= REST_DURATION:
+                    self._advance_animation()
+                continue
+
+            animation_duration = (
+                len(self.animation.frames) * FRAME_DURATION * REPEAT_COUNT
+            )
+            until_rest = animation_duration - self.animation_elapsed
+            step = min(remaining, until_rest)
+            self._move(step)
+            self.animation_elapsed += step
+            remaining -= step
+            if self.animation_elapsed >= animation_duration:
+                self.resting = True
+                self.rest_elapsed = 0.0
+
+    def _move(self, delta_time):
+        if self.animation.movement in {"run", "roll"}:
+            widest_frame = max(frame.width for frame in self.animation.frames)
+            left_edge = widest_frame * SPRITE_SCALE / 2 + 8
+            right_edge = CANVAS_WIDTH - left_edge
+            span = right_edge - left_edge
+            distance = self.x - left_edge
+            if self.direction < 0:
+                distance = 2 * span - distance
+            phase = (distance + 260 * delta_time) % (2 * span)
+            if phase <= span:
+                self.x = left_edge + phase
+                self.direction = 1
+            else:
+                self.x = right_edge - (phase - span)
+                self.direction = -1
+
+    def draw(self):
+        frame = self.frame
+        draw_width = frame.width * SPRITE_SCALE
+        draw_height = frame.height * SPRITE_SCALE
+        draw_y = GROUND_Y + draw_height / 2
+        if self.animation.movement == "jump":
+            last_frame = len(self.animation.frames) - 1
+            phase = self.frame_index / last_frame if last_frame else 0
+            draw_y += 150 * sin(pi * phase)
+
+        source_bottom = SPRITE_HEIGHT - frame.top - frame.height
+        if self.direction < 0 and self.animation.movement in {"run", "roll"}:
+            self.sprite.clip_composite_draw(
+                frame.left,
+                source_bottom,
+                frame.width,
+                frame.height,
+                0,
+                "h",
+                self.x,
+                draw_y,
+                draw_width,
+                draw_height,
+            )
+        else:
+            self.sprite.clip_draw(
+                frame.left,
+                source_bottom,
+                frame.width,
+                frame.height,
+                self.x,
+                draw_y,
+                draw_width,
+                draw_height,
+            )
+
+    def _advance_animation(self):
+        self.animation_index = (self.animation_index + 1) % len(ANIMATIONS)
+        self.animation_elapsed = 0.0
+        self.rest_elapsed = 0.0
+        self.resting = False
+        self._reset_position()
