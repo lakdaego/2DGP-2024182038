@@ -358,3 +358,40 @@ class AnimationViewer:
         self.rest_elapsed = 0.0
         self.resting = False
         self._reset_position()
+
+
+def main():
+    validate_animations()
+    sprite_path = Path(__file__).resolve().parent / "sonic-sprite.png"
+    if not sprite_path.is_file():
+        raise FileNotFoundError("Required sprite image not found: " + str(sprite_path))
+
+    open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
+    try:
+        sprite = load_image(str(sprite_path))
+        viewer = AnimationViewer(sprite)
+        running = True
+        previous_time = perf_counter()
+
+        while running:
+            for event in get_events():
+                if event.type == SDL_QUIT:
+                    running = False
+
+            if not running:
+                break
+
+            current_time = perf_counter()
+            viewer.update(current_time - previous_time)
+            previous_time = current_time
+
+            clear_canvas()
+            viewer.draw()
+            update_canvas()
+            delay(0.01)
+    finally:
+        close_canvas()
+
+
+if __name__ == "__main__":
+    main()
