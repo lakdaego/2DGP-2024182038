@@ -60,7 +60,25 @@ def _frames_from_bounds(bounds):
     return tuple(frames)
 
 
-_ANIMATION_DATA = []
+_ANIMATION_DATA = [
+    (
+        "대기 자세",
+        "still",
+        [
+            (1, 39, 29, 77),
+            (31, 40, 56, 77),
+            (58, 39, 85, 77),
+            (86, 40, 115, 77),
+            (118, 40, 147, 77),
+            (150, 40, 179, 77),
+            (182, 40, 210, 77),
+            (211, 39, 239, 76),
+            (240, 39, 268, 76),
+            (270, 45, 293, 76),
+            (302, 51, 330, 76),
+        ],
+    ),
+]
 ANIMATIONS = tuple(
     Animation(name, movement, _frames_from_bounds(bounds))
     for name, movement, bounds in _ANIMATION_DATA
