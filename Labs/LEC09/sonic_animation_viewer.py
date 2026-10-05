@@ -1,7 +1,7 @@
 """Play every animation in the Sonic sprite sheet with pico2d."""
 
 from dataclasses import dataclass
-from math import pi, sin
+from math import isfinite, pi, sin
 from pathlib import Path
 from time import perf_counter
 
@@ -283,8 +283,8 @@ class AnimationViewer:
             self.x = CANVAS_WIDTH / 2
 
     def update(self, delta_time):
-        if delta_time < 0:
-            raise ValueError("Elapsed time cannot be negative.")
+        if not isfinite(delta_time) or delta_time < 0:
+            raise ValueError("Elapsed time must be finite and non-negative.")
 
         remaining = delta_time
         while remaining > 0:
