@@ -26,6 +26,7 @@ FRAME_DURATION = 0.1
 REPEAT_COUNT = 5
 REST_DURATION = 1.0
 GROUND_Y = 140
+EXPECTED_FRAME_COUNTS = (11, 12, 6, 9, 6, 6, 6, 8, 8, 4)
 
 
 @dataclass(frozen=True)
@@ -209,11 +210,14 @@ def validate_animations():
     if len(ANIMATIONS) != 10:
         raise ValueError("The sprite sheet must define exactly 10 animations.")
 
-    if sum(len(animation.frames) for animation in ANIMATIONS) != 76:
+    actual_frame_counts = tuple(len(animation.frames) for animation in ANIMATIONS)
+    if actual_frame_counts != EXPECTED_FRAME_COUNTS:
         raise ValueError("The sprite sheet must define exactly 76 frames.")
 
     names = set()
     for animation in ANIMATIONS:
+        if not animation.name.strip():
+            raise ValueError("Animation names cannot be empty.")
         if animation.name in names:
             raise ValueError("Animation names must be unique: " + animation.name)
         names.add(animation.name)
