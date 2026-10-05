@@ -187,6 +187,16 @@ _ANIMATION_DATA = [
             (254, 378, 286, 413),
         ],
     ),
+    (
+        "점프",
+        "jump",
+        [
+            (6, 429, 39, 468),
+            (49, 426, 82, 468),
+            (96, 427, 118, 465),
+            (125, 427, 147, 465),
+        ],
+    ),
 ]
 ANIMATIONS = tuple(
     Animation(name, movement, _frames_from_bounds(bounds))
