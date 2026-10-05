@@ -5,18 +5,6 @@ from math import isfinite, pi, sin
 from pathlib import Path
 from time import perf_counter
 
-from pico2d import (
-    SDL_QUIT,
-    close_canvas,
-    clear_canvas,
-    delay,
-    get_events,
-    load_image,
-    open_canvas,
-    update_canvas,
-)
-
-
 CANVAS_WIDTH = 1200
 CANVAS_HEIGHT = 800
 SPRITE_WIDTH = 399
@@ -372,6 +360,17 @@ class AnimationViewer:
 
 
 def main():
+    from pico2d import (
+        SDL_QUIT,
+        clear_canvas,
+        close_canvas,
+        delay,
+        get_events,
+        load_image,
+        open_canvas,
+        update_canvas,
+    )
+
     validate_animations()
     sprite_path = Path(__file__).resolve().parent / "sonic-sprite.png"
     if not sprite_path.is_file():
