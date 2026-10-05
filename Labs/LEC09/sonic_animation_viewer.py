@@ -27,6 +27,8 @@ FRAME_TIME_EPSILON = 1e-9
 REPEAT_COUNT = 5
 REST_DURATION = 1.0
 GROUND_Y = 140
+RUN_SPEED = 260
+ROLL_SPEED = 180
 EXPECTED_FRAME_COUNTS = (11, 12, 6, 9, 6, 6, 6, 8, 8, 4)
 
 
@@ -316,7 +318,8 @@ class AnimationViewer:
             distance = self.x - left_edge
             if self.direction < 0:
                 distance = 2 * span - distance
-            phase = (distance + 260 * delta_time) % (2 * span)
+            speed = RUN_SPEED if self.animation.movement == "run" else ROLL_SPEED
+            phase = (distance + speed * delta_time) % (2 * span)
             if phase <= span:
                 self.x = left_edge + phase
                 self.direction = 1
