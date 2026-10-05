@@ -23,6 +23,7 @@ SPRITE_WIDTH = 399
 SPRITE_HEIGHT = 525
 SPRITE_SCALE = 4
 FRAME_DURATION = 0.1
+FRAME_TIME_EPSILON = 1e-9
 REPEAT_COUNT = 5
 REST_DURATION = 1.0
 GROUND_Y = 140
@@ -260,7 +261,10 @@ class AnimationViewer:
             return len(self.animation.frames) - 1
         cycle_duration = len(self.animation.frames) * FRAME_DURATION
         return min(
-            int((self.animation_elapsed % cycle_duration) / FRAME_DURATION),
+            int(
+                (self.animation_elapsed % cycle_duration + FRAME_TIME_EPSILON)
+                / FRAME_DURATION
+            ),
             len(self.animation.frames) - 1,
         )
 
