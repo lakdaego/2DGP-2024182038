@@ -273,10 +273,10 @@ class AnimationViewer:
         return self.animation.frames[self.frame_index]
 
     def _reset_position(self):
+        self.direction = 1
         if self.animation.movement in {"run", "roll"}:
             widest_frame = max(frame.width for frame in self.animation.frames)
             self.x = widest_frame * SPRITE_SCALE / 2 + 8
-            self.direction = 1
         else:
             self.x = CANVAS_WIDTH / 2
 
