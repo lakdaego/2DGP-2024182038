@@ -202,3 +202,33 @@ ANIMATIONS = tuple(
     Animation(name, movement, _frames_from_bounds(bounds))
     for name, movement, bounds in _ANIMATION_DATA
 )
+
+
+def validate_animations():
+    if len(ANIMATIONS) != 10:
+        raise ValueError("The sprite sheet must define exactly 10 animations.")
+
+    if sum(len(animation.frames) for animation in ANIMATIONS) != 76:
+        raise ValueError("The sprite sheet must define exactly 76 frames.")
+
+    names = set()
+    for animation in ANIMATIONS:
+        if animation.name in names:
+            raise ValueError("Animation names must be unique: " + animation.name)
+        names.add(animation.name)
+
+        if animation.movement not in {"still", "run", "roll", "jump"}:
+            raise ValueError("Unsupported movement type: " + animation.movement)
+        if not animation.frames:
+            raise ValueError("Animation has no frames: " + animation.name)
+
+        for frame in animation.frames:
+            if (
+                frame.left < 0
+                or frame.top < 0
+                or frame.width <= 0
+                or frame.height <= 0
+                or frame.left + frame.width > SPRITE_WIDTH
+                or frame.top + frame.height > SPRITE_HEIGHT
+            ):
+                raise ValueError("Frame lies outside the sprite sheet: " + animation.name)
