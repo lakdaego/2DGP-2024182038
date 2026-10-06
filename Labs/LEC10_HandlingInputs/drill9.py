@@ -59,7 +59,7 @@ while running:
 
 	clear_canvas()
 	background.draw(400, 300, 800, 600)
-	source_y = 300 if facing == 1 else 200
+	source_y = 100 if facing == 1 else 0
 	animation_sheet.clip_draw(frame * 100, source_y, 100, 100, x, 100)
 	update_canvas()
 	delay(0.05)
