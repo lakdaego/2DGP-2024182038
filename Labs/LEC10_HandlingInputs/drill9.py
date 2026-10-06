@@ -1,5 +1,5 @@
 import os
-from math import pi, sqrt
+from math import sqrt
 
 from pico2d import *
 
@@ -37,10 +37,8 @@ def handle_events():
 				facing = 'right'
 			elif event.key == SDLK_UP:
 				pressed_keys.add(SDLK_UP)
-				facing = 'up'
 			elif event.key == SDLK_DOWN:
 				pressed_keys.add(SDLK_DOWN)
-				facing = 'down'
 		elif event.type == SDL_KEYUP:
 			if event.key in (SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN):
 				pressed_keys.discard(event.key)
@@ -61,13 +59,9 @@ while running:
 		direction_y = -1
 
 	if direction_x != 0 or direction_y != 0:
-		if direction_y > 0:
-			facing = 'up'
-		elif direction_y < 0:
-			facing = 'down'
-		elif direction_x < 0:
+		if direction_x < 0:
 			facing = 'left'
-		else:
+		elif direction_x > 0:
 			facing = 'right'
 
 		if direction_x != 0 and direction_y != 0:
@@ -81,21 +75,8 @@ while running:
 
 	clear_canvas()
 	background.draw(400, 300, 800, 600)
-	if facing == 'left':
-		source_y = 0
-		angle = 0
-	elif facing == 'up':
-		source_y = 100
-		angle = pi / 2
-	elif facing == 'down':
-		source_y = 100
-		angle = -pi / 2
-	else:
-		source_y = 100
-		angle = 0
-	animation_sheet.clip_composite_draw(
-		frame * 100, source_y, 100, 100, angle, '', x, y, 100, 100
-	)
+	source_y = 0 if facing == 'left' else 100
+	animation_sheet.clip_draw(frame * 100, source_y, 100, 100, x, y)
 	update_canvas()
 	delay(0.05)
 
