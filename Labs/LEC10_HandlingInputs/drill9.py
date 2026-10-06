@@ -60,18 +60,21 @@ while running:
 	if SDLK_DOWN in pressed_keys:
 		direction_y = -1
 
-	moving = direction_x != 0 or direction_y != 0
+	if direction_x != 0 and direction_y != 0:
+		direction_x /= sqrt(2)
+		direction_y /= sqrt(2)
+
+	next_x = max(50, min(750, x + direction_x * 5))
+	next_y = max(50, min(550, y + direction_y * 5))
+	moving = next_x != x or next_y != y
 	if moving:
 		if direction_x < 0:
 			facing = 'left'
 		elif direction_x > 0:
 			facing = 'right'
 
-		if direction_x != 0 and direction_y != 0:
-			direction_x /= sqrt(2)
-			direction_y /= sqrt(2)
-		x = max(50, min(750, x + direction_x * 5))
-		y = max(50, min(550, y + direction_y * 5))
+		x = next_x
+		y = next_y
 		frame = (frame + 1) % 8
 		idle_frame = 0
 		idle_ticks = 0
