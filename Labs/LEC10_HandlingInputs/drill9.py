@@ -17,6 +17,8 @@ pressed_keys = set()
 x = 400
 y = 100
 frame = 0
+idle_frame = 0
+idle_ticks = 0
 facing = 'right'
 
 
@@ -58,7 +60,8 @@ while running:
 	if SDLK_DOWN in pressed_keys:
 		direction_y = -1
 
-	if direction_x != 0 or direction_y != 0:
+	moving = direction_x != 0 or direction_y != 0
+	if moving:
 		if direction_x < 0:
 			facing = 'left'
 		elif direction_x > 0:
@@ -70,13 +73,23 @@ while running:
 		x = max(50, min(750, x + direction_x * 5))
 		y = max(50, min(550, y + direction_y * 5))
 		frame = (frame + 1) % 8
+		idle_frame = 0
+		idle_ticks = 0
 	else:
-		frame = 0
+		idle_ticks += 1
+		if idle_ticks == 4:
+			idle_frame = (idle_frame + 1) % 8
+			idle_ticks = 0
 
 	clear_canvas()
 	background.draw(400, 300, 800, 600)
-	source_y = 0 if facing == 'left' else 100
-	animation_sheet.clip_draw(frame * 100, source_y, 100, 100, x, y)
+	if moving:
+		source_y = 0 if facing == 'left' else 100
+		draw_frame = frame
+	else:
+		source_y = 200 if facing == 'left' else 300
+		draw_frame = idle_frame
+	animation_sheet.clip_draw(draw_frame * 100, source_y, 100, 100, x, y)
 	update_canvas()
 	delay(0.05)
 
