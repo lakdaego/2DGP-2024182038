@@ -13,6 +13,12 @@ class Grass:
     def update(self):
         pass
 
+class ball:
+    def __init__(self):
+        self.image = load_image('ball21x21.png')
+        self.frame = 0
+        self.x, self.y = random.randint(100, 700), 90
+
     
 class Boy:
     def __init__(self):
