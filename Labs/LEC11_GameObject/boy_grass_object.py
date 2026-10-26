@@ -19,6 +19,14 @@ class ball:
         self.frame = 0
         self.x, self.y = random.randint(100, 700), 90
 
+    def draw(self):
+        self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+
+    def update(self):
+        self.frame = (self.frame + 1) % 8
+        self.x += 5
+    
+
     
 class Boy:
     def __init__(self):
