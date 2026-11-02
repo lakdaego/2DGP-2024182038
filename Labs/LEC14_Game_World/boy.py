@@ -10,7 +10,7 @@ from ball import Ball
 
 class Boy:
     def __init__(self):
-        self.x, self.y = 400, 90
+        self.x, self.y = 400, 40
         self.frame = 0
         self.image = load_image('animation_sheet.png')
         self.idle_started_at = get_time()
