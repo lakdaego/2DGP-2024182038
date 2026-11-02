@@ -4,6 +4,8 @@ from pico2d import get_canvas_width, get_time, load_image
 from sdl2 import (SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT,
                   SDLK_SPACE)
 from transitions import Machine
+import game_world
+from ball import Ball
 
 
 class Boy:
@@ -30,7 +32,7 @@ class Boy:
                  'source': 'RUN', 'dest': 'IDLE'},
                 {'trigger': 'fire_ball',
                  'source': ['IDLE', 'RUN'], 'dest': '=',
-                 'before': 'print_ball_direction'},
+                 'before': 'create_ball'},
             ],
             initial='IDLE',
             auto_transitions=False,
@@ -46,9 +48,9 @@ class Boy:
     def on_enter_RUN(self):
         self.frame = 0
 
-    def print_ball_direction(self):
-        direction = 'Right' if self.face_dir == 1 else 'Left'
-        print(f'Fire Ball: {direction}')
+    def create_ball(self):
+        ball = Ball(self.x, self.y, self.face_dir)
+        game_world.add_object(ball)
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:

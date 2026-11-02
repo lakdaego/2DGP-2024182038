@@ -3,8 +3,14 @@ world= []
 def add_object(o):
     world.append(o)
 
+
+def remove_object(o):
+    if o in world:
+        world.remove(o)
+
+
 def update():
-    for o in world:
+    for o in world.copy():
         o.update()
 
 def render():
