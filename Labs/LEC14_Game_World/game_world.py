@@ -1,4 +1,4 @@
-world = [[], []]
+world = [[], [], []]
 
 
 def add_object(depth, o):
