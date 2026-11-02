@@ -28,6 +28,9 @@ class Boy:
                  'source': ['IDLE', 'SLEEP'], 'dest': 'RUN'},
                 {'trigger': 'stop_run',
                  'source': 'RUN', 'dest': 'IDLE'},
+                {'trigger': 'fire_ball',
+                 'source': ['IDLE', 'RUN'], 'dest': '=',
+                 'before': 'print_ball_direction'},
             ],
             initial='IDLE',
             auto_transitions=False,
@@ -43,11 +46,16 @@ class Boy:
     def on_enter_RUN(self):
         self.frame = 0
 
+    def print_ball_direction(self):
+        direction = 'Right' if self.face_dir == 1 else 'Left'
+        print(f'Fire Ball: {direction}')
+
     def handle_event(self, event):
-        if (event.type == SDL_KEYDOWN and
-                event.key == SDLK_SPACE and
-                self.state == 'SLEEP'):
-            self.wake_up()
+        if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
+            if self.state == 'SLEEP':
+                self.wake_up()
+            elif self.state in ('IDLE', 'RUN'):
+                self.fire_ball()
             return
 
         if (event.type not in (SDL_KEYDOWN, SDL_KEYUP) or
