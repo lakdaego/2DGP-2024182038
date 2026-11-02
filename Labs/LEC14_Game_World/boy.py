@@ -50,7 +50,7 @@ class Boy:
 
     def create_ball(self):
         ball = Ball(self.x, self.y, self.face_dir)
-        game_world.add_object(ball)
+        game_world.add_object(1, ball)
 
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
