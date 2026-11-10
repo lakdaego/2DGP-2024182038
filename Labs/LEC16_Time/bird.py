@@ -18,8 +18,8 @@ class Bird:
         if Bird.image is None:
             Bird.image = load_image('bird_animation.png')
 
-        self.x = random.uniform(0, get_canvas_width())
-        self.y = random.uniform(250, 540)
+        self.x = random.uniform(get_canvas_width() * 0.2, get_canvas_width() * 0.8)
+        self.y = random.uniform(300, 500)
         self.speed = random.uniform(40, 100)
         self.scale = random.uniform(0.6, 0.9)
         self.frame = random.randrange(FRAME_COUNT)
