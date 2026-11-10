@@ -29,7 +29,7 @@ def init():
     boy = Boy()
     game_world.add_oject(boy)
 
-    birds = [Bird()]
+    birds = [Bird() for _ in range(10)]
     for bird in birds:
         game_world.add_oject(bird)
 
@@ -59,7 +59,6 @@ def render():
     clear_canvas()
     game_world.render()
     update_canvas()
-
 
 
 
